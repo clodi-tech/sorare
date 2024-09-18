@@ -4,6 +4,7 @@ import { liteClient as algoliasearch } from "algoliasearch/lite";
 import { InstantSearchNext } from "react-instantsearch-nextjs";
 import {
   Hits,
+  Configure,
   SearchBox,
   RefinementList,
   Pagination,
@@ -24,6 +25,7 @@ export default function Page() {
       indexName="CardsOnSale_LowestPrice"
       searchClient={searchClient}
     >
+      <Configure filters="on_sale:true" hitsPerPage={10} />
       <SearchBox />
       <RefinementList attribute="position" />
       <Hits hitComponent={Hit} />
