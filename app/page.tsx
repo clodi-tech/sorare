@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const query = `
 {
   user(slug: "clodi-tech") {
@@ -59,10 +61,11 @@ export default async function Home() {
       <div className="flex flex-wrap gap-2">
         {data.user.footballCards.nodes.map((card: FootballCard) => (
           <div key={card.slug}>
-            <img
+            <Image
               src={card.pictureUrl}
               alt={card.player.displayName}
               width={100}
+              height={100}
             />
             <h2>{card.averageScore}</h2>
           </div>
