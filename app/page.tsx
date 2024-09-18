@@ -64,8 +64,8 @@ export default async function Home() {
             <Image
               src={card.pictureUrl}
               alt={card.player.displayName}
-              width={100}
-              height={100}
+              width={77.1}
+              height={124.8}
             />
             <h2>{card.averageScore}</h2>
           </div>
