@@ -1,7 +1,5 @@
 "use client";
 
-export const dynamic = "force-dynamic";
-
 import { liteClient as algoliasearch } from "algoliasearch/lite";
 import { InstantSearchNext } from "react-instantsearch-nextjs";
 import { Hits, SearchBox } from "react-instantsearch";

@@ -1,9 +1,16 @@
 const query = `
-query {
-  football{
-    allCards{
-      nodes{
-        age
+{
+  user(slug: "clodi-tech") {
+    nickname
+    footballCardCounts {
+      limited
+      rare
+      superRare
+      unique
+    }
+    cards(sport: FOOTBALL, rarities: [limited, rare, super_rare, unique]) {
+      nodes {
+        name
       }
     }
   }
@@ -24,7 +31,18 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      {JSON.stringify(data)}
+      <div>
+        <h1>Nickname: {data.user.nickname}</h1>
+        <h2>Limited: {data.user.footballCardCounts.limited}</h2>
+        <h2>Rare: {data.user.footballCardCounts.rare}</h2>
+        <h2>Super Rare: {data.user.footballCardCounts.superRare}</h2>
+        <h2>Unique: {data.user.footballCardCounts.unique}</h2>
+      </div>
+      <div>
+        {data.user.cards.nodes.map((card: any) => (
+          <h2 key={card.name}>{card.name}</h2>
+        ))}
+      </div>
     </div>
   );
 }
