@@ -26,6 +26,15 @@ const query = `
 }
   `;
 
+interface FootballCard {
+  slug: string;
+  averageScore: number;
+  pictureUrl: string;
+  player: {
+    displayName: string;
+  };
+}
+
 export default async function Home() {
   const response = await fetch("https://api.sorare.com/federation/graphql", {
     method: "POST",
@@ -48,7 +57,7 @@ export default async function Home() {
         <h2>Unique: {data.user.footballCardCounts.unique}</h2>
       </div>
       <div className="flex flex-wrap gap-2">
-        {data.user.footballCards.nodes.map((card: any) => (
+        {data.user.footballCards.nodes.map((card: FootballCard) => (
           <div key={card.slug}>
             <img
               src={card.pictureUrl}
