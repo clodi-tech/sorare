@@ -8,9 +8,18 @@ const query = `
       superRare
       unique
     }
-    cards(sport: FOOTBALL, rarities: [limited, rare, super_rare, unique]) {
+    footballCards(rarities: [limited, rare, super_rare, unique]) {
       nodes {
-        name
+        slug
+        averageScore(type: LAST_FIFTEEN_SO5_AVERAGE_SCORE)
+        rarity
+        inSeasonEligible
+        pictureUrl
+        player {
+          slug
+          displayName
+          position
+        }
       }
     }
   }
@@ -30,17 +39,24 @@ export default async function Home() {
   const { data } = await response.json();
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <div>
-        <h1>Nickname: {data.user.nickname}</h1>
+    <div className="flex gap-4 flex-col items-center justify-center min-h-screen">
+      <h1>Welcome {data.user.nickname}</h1>
+      <div className="flex gap-2">
         <h2>Limited: {data.user.footballCardCounts.limited}</h2>
         <h2>Rare: {data.user.footballCardCounts.rare}</h2>
         <h2>Super Rare: {data.user.footballCardCounts.superRare}</h2>
         <h2>Unique: {data.user.footballCardCounts.unique}</h2>
       </div>
-      <div>
-        {data.user.cards.nodes.map((card: any) => (
-          <h2 key={card.name}>{card.name}</h2>
+      <div className="flex flex-wrap gap-2">
+        {data.user.footballCards.nodes.map((card: any) => (
+          <div key={card.slug}>
+            <img
+              src={card.pictureUrl}
+              alt={card.player.displayName}
+              width={100}
+            />
+            <h2>{card.averageScore}</h2>
+          </div>
         ))}
       </div>
     </div>
