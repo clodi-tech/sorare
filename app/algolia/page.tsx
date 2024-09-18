@@ -15,7 +15,11 @@ const searchClient = algoliasearch(
   "30fdac6793afa5b820c36e7202e4b872"
 );
 
-const Hit = ({ hit }: { hit: any }) => {
+interface CardHit {
+  slug: string;
+}
+
+const Hit = ({ hit }: { hit: CardHit }) => {
   return <div>{hit.slug}</div>;
 };
 
