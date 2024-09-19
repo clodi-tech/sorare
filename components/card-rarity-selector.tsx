@@ -46,37 +46,61 @@ export function CardRaritySelector({
   };
   cards: FootballCard[];
 }) {
-  const [selectedRarity, setSelectedRarity] = useState<CardRarity>("limited");
+  const [selectedRarities, setSelectedRarities] = useState<CardRarity[]>([
+    "limited",
+  ]);
 
-  const handleRarityChange = (value: string) => {
-    setSelectedRarity(value as CardRarity);
+  const handleRarityChange = (values: string[]) => {
+    if (values.length === 0) {
+      return;
+    } else {
+      setSelectedRarities(values as CardRarity[]);
+    }
   };
 
   return (
     <>
       <ToggleGroup
-        type="single"
-        value={selectedRarity}
+        type="multiple"
+        value={selectedRarities}
         onValueChange={handleRarityChange}
         className="justify-center"
       >
-        <ToggleGroupItem value="limited" aria-label="Limited">
+        <ToggleGroupItem
+          value="limited"
+          aria-label="Limited"
+          disabled={counts.limited === 0}
+        >
           Limited ({counts.limited})
         </ToggleGroupItem>
-        <ToggleGroupItem value="rare" aria-label="Rare">
+        <ToggleGroupItem
+          value="rare"
+          aria-label="Rare"
+          disabled={counts.rare === 0}
+        >
           Rare ({counts.rare})
         </ToggleGroupItem>
-        <ToggleGroupItem value="super_rare" aria-label="Super Rare">
+        <ToggleGroupItem
+          value="super_rare"
+          aria-label="Super Rare"
+          disabled={counts.superRare === 0}
+        >
           Super Rare ({counts.superRare})
         </ToggleGroupItem>
-        <ToggleGroupItem value="unique" aria-label="Unique">
+        <ToggleGroupItem
+          value="unique"
+          aria-label="Unique"
+          disabled={counts.unique === 0}
+        >
           Unique ({counts.unique})
         </ToggleGroupItem>
       </ToggleGroup>
 
       <div className="flex flex-wrap gap-2">
         {cards
-          .filter((card: FootballCard) => card.rarity === selectedRarity)
+          .filter((card: FootballCard) =>
+            selectedRarities.includes(card.rarity as CardRarity)
+          )
           .map((card: FootballCard) => (
             <Card key={card.objectID} className="flex flex-col">
               <CardHeader>
