@@ -53,7 +53,14 @@ export async function getUserCards(userId: string) {
         card.rarity,
         card.in_season_eligible
       );
-      return { ...card, floor };
+      const pnl = (((floor - card.price) / card.price) * 100).toFixed(2);
+      if (!card.active_club) {
+        card.active_club = { long_name: "Unknown Club" };
+      }
+      if (!card.active_league) {
+        card.active_league = { display_name: "Unknown League" };
+      }
+      return { ...card, floor, pnl };
     })
   );
 

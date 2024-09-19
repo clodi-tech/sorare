@@ -20,6 +20,7 @@ interface FootballCard {
   pictureUrl: string;
   price: number;
   floor: number;
+  pnl: number;
   player: {
     slug: string;
     display_name: string;
@@ -80,29 +81,32 @@ export function CardRaritySelector({
             <Card key={card.objectID} className="flex flex-col">
               <CardHeader>
                 <CardTitle>
-                  {card.player.display_name} - {card.position}
+                  {card.player.display_name} - {card.position}{" "}
+                  {card.in_season_eligible && " 2425"}
                 </CardTitle>
                 <CardDescription>
-                  {card.active_club.long_name} -{" "}
-                  {card.active_league.display_name}
+                  {card.active_club.long_name || "Unknown Club"} -{" "}
+                  {card.active_league.display_name || "Unknown League"}
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex flex-col">
-                <span>inSeason {card.in_season_eligible ? "Yes" : "No"}</span>
                 <span>floor @ {card.floor / 100000} ETH</span>
                 <span>bought @ {card.price / 100000} ETH</span>
               </CardContent>
-              <CardFooter>
-                <span>
-                  pnl{" "}
-                  {(((card.floor - card.price) / card.price) * 100).toFixed(2)}%
+              <CardFooter className="flex gap-1">
+                <span className="font-medium">pnl</span>
+                <span
+                  className="font-medium"
+                  style={{
+                    color: card.pnl > 0 ? "green" : "red",
+                  }}
+                >
+                  {card.pnl}%
                 </span>
               </CardFooter>
             </Card>
           ))}
       </div>
-
-      <div>{JSON.stringify(cards, null, 2)}</div>
     </>
   );
 }
