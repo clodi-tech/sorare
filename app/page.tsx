@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { CardRaritySelectorComponent } from "@/components/card-rarity-selector";
 import { algoliasearch } from "algoliasearch";
 
 const client = algoliasearch("7Z0Z8PASDY", "30fdac6793afa5b820c36e7202e4b872");
@@ -17,12 +18,16 @@ async function getPrice(
     },
   });
 
+  if (!res.hits[0]) {
+    return 0;
+  }
+
   return res.hits[0].price;
 }
 
 const query = `
 {
-  user(slug: "clodi-tech") {
+  user(slug: "romanellis") {
     nickname
     footballCardCounts {
       limited
@@ -87,25 +92,10 @@ export default async function Home() {
   return (
     <div className="flex gap-4 flex-col items-center justify-center min-h-screen">
       <h1>Welcome {data.user.nickname}</h1>
-      <div className="flex gap-2">
-        <h2>Limited: {data.user.footballCardCounts.limited}</h2>
-        <h2>Rare: {data.user.footballCardCounts.rare}</h2>
-        <h2>Super Rare: {data.user.footballCardCounts.superRare}</h2>
-        <h2>Unique: {data.user.footballCardCounts.unique}</h2>
-      </div>
-      <div className="flex flex-wrap gap-2">
-        {cardsWithPrices.map((card: FootballCard & { price: number }) => (
-          <div key={card.slug}>
-            <Image
-              src={card.pictureUrl}
-              alt={card.player.displayName}
-              width={77.1}
-              height={124.8}
-            />
-            <h2>{card.price / 100000} ETH</h2>
-          </div>
-        ))}
-      </div>
+      <CardRaritySelectorComponent
+        counts={data.user.footballCardCounts}
+        cards={cardsWithPrices}
+      />
     </div>
   );
 }
