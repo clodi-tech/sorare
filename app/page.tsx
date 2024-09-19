@@ -51,9 +51,13 @@ const query = `
 interface FootballCard {
   slug: string;
   averageScore: number;
+  rarity: string;
+  inSeasonEligible: boolean;
   pictureUrl: string;
   player: {
+    slug: string;
     displayName: string;
+    position: string;
   };
 }
 
@@ -69,6 +73,18 @@ export default async function Home() {
 
   const { data } = await response.json();
 
+  // Fetch prices for all cards
+  const cardsWithPrices = await Promise.all(
+    data.user.footballCards.nodes.map(async (card: FootballCard) => {
+      const price = await getPrice(
+        card.rarity,
+        card.player.slug,
+        card.inSeasonEligible
+      );
+      return { ...card, price };
+    })
+  );
+
   return (
     <div className="flex gap-4 flex-col items-center justify-center min-h-screen">
       <h1>Welcome {data.user.nickname}</h1>
@@ -79,7 +95,7 @@ export default async function Home() {
         <h2>Unique: {data.user.footballCardCounts.unique}</h2>
       </div>
       <div className="flex flex-wrap gap-2">
-        {data.user.footballCards.nodes.map((card: FootballCard) => (
+        {cardsWithPrices.map((card: FootballCard & { price: number }) => (
           <div key={card.slug}>
             <Image
               src={card.pictureUrl}
@@ -87,7 +103,7 @@ export default async function Home() {
               width={77.1}
               height={124.8}
             />
-            <h2>{card.averageScore}</h2>
+            <h2>{card.price / 100000} ETH</h2>
           </div>
         ))}
       </div>
