@@ -73,7 +73,6 @@ export default async function Home() {
 
   const { data } = await response.json();
 
-  // Fetch prices for all cards
   const cardsWithPrices = await Promise.all(
     data.user.footballCards.nodes.map(async (card: FootballCard) => {
       const price = await getPrice(
