@@ -1,6 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 type CardRarity = "limited" | "rare" | "super_rare" | "unique";
@@ -69,15 +77,28 @@ export function CardRaritySelector({
         {cards
           .filter((card: FootballCard) => card.rarity === selectedRarity)
           .map((card: FootballCard) => (
-            <div key={card.objectID} className="flex flex-col">
-              <span>{card.player.display_name}</span>
-              <span>{card.position}</span>
-              <span>
-                {card.active_club.long_name} - {card.active_league.display_name}
-              </span>
-              <span>floor @ {card.floor / 100000} ETH</span>
-              <span>bought @ {card.price / 100000} ETH</span>
-            </div>
+            <Card key={card.objectID} className="flex flex-col">
+              <CardHeader>
+                <CardTitle>
+                  {card.player.display_name} - {card.position}
+                </CardTitle>
+                <CardDescription>
+                  {card.active_club.long_name} -{" "}
+                  {card.active_league.display_name}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex flex-col">
+                <span>inSeason {card.in_season_eligible ? "Yes" : "No"}</span>
+                <span>floor @ {card.floor / 100000} ETH</span>
+                <span>bought @ {card.price / 100000} ETH</span>
+              </CardContent>
+              <CardFooter>
+                <span>
+                  pnl{" "}
+                  {(((card.floor - card.price) / card.price) * 100).toFixed(2)}%
+                </span>
+              </CardFooter>
+            </Card>
           ))}
       </div>
 
