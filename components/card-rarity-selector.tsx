@@ -172,6 +172,10 @@ export function CardRaritySelector({
         </ToggleGroupItem>
       </ToggleGroup>
 
+      <span className="text-lg font-medium">
+        Total Sales Price: {totalSalesPrice.toFixed(4)} ETH
+      </span>
+
       <div className="flex flex-wrap gap-2">
         {cards
           .filter((card: FootballCard) =>
@@ -216,7 +220,6 @@ export function CardRaritySelector({
             </Card>
           ))}
       </div>
-      <span>Total Sales Price: {totalSalesPrice} ETH</span>
     </>
   );
 }

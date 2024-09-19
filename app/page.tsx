@@ -2,7 +2,7 @@ import { CardRaritySelector } from "@/components/card-rarity-selector";
 import { getUser, getUserCards } from "@/lib/actions";
 
 export default async function Home() {
-  const user = await getUser("romanellis");
+  const user = await getUser("clodi-tech");
 
   const cards = await getUserCards(user.id);
 
