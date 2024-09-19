@@ -12,6 +12,7 @@ import {
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 type CardRarity = "limited" | "rare" | "super_rare" | "unique";
+type CardPosition = "Goalkeeper" | "Defender" | "Midfielder" | "Forward";
 
 interface FootballCard {
   objectID: string;
@@ -49,12 +50,26 @@ export function CardRaritySelector({
   const [selectedRarities, setSelectedRarities] = useState<CardRarity[]>([
     "limited",
   ]);
+  const [selectedPositions, setSelectedPositions] = useState<CardPosition[]>([
+    "Goalkeeper",
+    "Defender",
+    "Midfielder",
+    "Forward",
+  ]);
 
   const handleRarityChange = (values: string[]) => {
     if (values.length === 0) {
       return;
     } else {
       setSelectedRarities(values as CardRarity[]);
+    }
+  };
+
+  const handlePositionChange = (values: string[]) => {
+    if (values.length === 0) {
+      return;
+    } else {
+      setSelectedPositions(values as CardPosition[]);
     }
   };
 
@@ -96,10 +111,33 @@ export function CardRaritySelector({
         </ToggleGroupItem>
       </ToggleGroup>
 
+      <ToggleGroup
+        type="multiple"
+        value={selectedPositions}
+        onValueChange={handlePositionChange}
+        className="justify-center"
+      >
+        <ToggleGroupItem value="Goalkeeper" aria-label="Goalkeeper">
+          Goalkeeper
+        </ToggleGroupItem>
+        <ToggleGroupItem value="Defender" aria-label="Defender">
+          Defender
+        </ToggleGroupItem>
+        <ToggleGroupItem value="Midfielder" aria-label="Midfielder">
+          Midfielder
+        </ToggleGroupItem>
+        <ToggleGroupItem value="Forward" aria-label="Forward">
+          Forward
+        </ToggleGroupItem>
+      </ToggleGroup>
+
       <div className="flex flex-wrap gap-2">
         {cards
           .filter((card: FootballCard) =>
             selectedRarities.includes(card.rarity as CardRarity)
+          )
+          .filter((card: FootballCard) =>
+            selectedPositions.includes(card.position as CardPosition)
           )
           .map((card: FootballCard) => (
             <Card key={card.objectID} className="flex flex-col">
