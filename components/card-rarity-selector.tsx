@@ -56,6 +56,8 @@ export function CardRaritySelector({
     "Midfielder",
     "Forward",
   ]);
+  const [selectedCards, setSelectedCards] = useState<string[]>([]);
+  const [totalSalesPrice, setTotalSalesPrice] = useState<number>(0);
 
   const handleRarityChange = (values: string[]) => {
     if (values.length === 0) {
@@ -71,6 +73,22 @@ export function CardRaritySelector({
     } else {
       setSelectedPositions(values as CardPosition[]);
     }
+  };
+
+  const handleCardClick = (card: FootballCard) => {
+    const salesPrice = card.floor / 100000;
+    setTotalSalesPrice((prev) => {
+      if (selectedCards.includes(card.objectID)) {
+        return prev - salesPrice;
+      } else {
+        return prev + salesPrice;
+      }
+    });
+    setSelectedCards((prev) =>
+      prev.includes(card.objectID)
+        ? prev.filter((id) => id !== card.objectID)
+        : [...prev, card.objectID]
+    );
   };
 
   return (
@@ -140,7 +158,13 @@ export function CardRaritySelector({
             selectedPositions.includes(card.position as CardPosition)
           )
           .map((card: FootballCard) => (
-            <Card key={card.objectID} className="flex flex-col">
+            <Card
+              key={card.objectID}
+              className={`flex flex-col cursor-pointer ${
+                selectedCards.includes(card.objectID) ? "ring-2" : ""
+              }`}
+              onClick={() => handleCardClick(card)}
+            >
               <CardHeader>
                 <CardTitle>
                   {card.player.display_name} - {card.position}{" "}
@@ -169,6 +193,7 @@ export function CardRaritySelector({
             </Card>
           ))}
       </div>
+      <span>Total Sales Price: {totalSalesPrice} ETH</span>
     </>
   );
 }
