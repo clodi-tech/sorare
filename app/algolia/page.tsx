@@ -4,27 +4,27 @@ const client = algoliasearch("7Z0Z8PASDY", "30fdac6793afa5b820c36e7202e4b872");
 
 export default async function Page() {
   const res = await client.searchSingleIndex({
-    indexName: "CardsOnSale_LowestPrice",
+    indexName: "Card",
     searchParams: {
       filters:
-        "on_sale:true AND sale.primary:false AND rarity:limited AND player.slug:rafael-alexandre-conceicao-leao AND in_season_eligible:false",
-      distinct: true,
-      hitsPerPage: 10,
+        "user.id:512dcf61-fcff-479f-8126-97636bb6a961 AND sport:football",
+      attributesToRetrieve: [
+        "price",
+        "rarity",
+        "position",
+        "in_season_eligible",
+        "picture_url",
+        "player.display_name",
+        "player.slug",
+        "active_club.long_name",
+        "active_league.display_name",
+      ],
     },
   });
 
   return (
     <div>
-      <h1>Rafael Leao</h1>
-      {res.hits.map((hit: any) => (
-        <div key={hit.objectID}>
-          <h2>{hit.name}</h2>
-          <p>{hit.price}</p>
-        </div>
-      ))}
-      <div>
-        <pre>{JSON.stringify(res, null, 2)}</pre>
-      </div>
+      <pre>{JSON.stringify(res, null, 2)}</pre>
     </div>
   );
 }

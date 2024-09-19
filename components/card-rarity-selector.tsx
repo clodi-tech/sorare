@@ -2,25 +2,30 @@
 
 import { useState } from "react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import Image from "next/image";
 
 type CardRarity = "limited" | "rare" | "super_rare" | "unique";
 
 interface FootballCard {
-  slug: string;
-  averageScore: number;
+  objectID: string;
   rarity: string;
-  inSeasonEligible: boolean;
+  in_season_eligible: boolean;
   pictureUrl: string;
   price: number;
+  floor: number;
   player: {
     slug: string;
-    displayName: string;
-    position: string;
+    display_name: string;
   };
+  active_club: {
+    long_name: string;
+  };
+  active_league: {
+    display_name: string;
+  };
+  position: string;
 }
 
-export function CardRaritySelectorComponent({
+export function CardRaritySelector({
   counts,
   cards,
 }: {
@@ -64,17 +69,19 @@ export function CardRaritySelectorComponent({
         {cards
           .filter((card: FootballCard) => card.rarity === selectedRarity)
           .map((card: FootballCard) => (
-            <div key={card.slug}>
-              <Image
-                src={card.pictureUrl}
-                alt={card.player.displayName}
-                width={77.1}
-                height={124.8}
-              />
-              <h2>{card.price / 100000} ETH</h2>
+            <div key={card.objectID} className="flex flex-col">
+              <span>{card.player.display_name}</span>
+              <span>{card.position}</span>
+              <span>
+                {card.active_club.long_name} - {card.active_league.display_name}
+              </span>
+              <span>floor @ {card.floor / 100000} ETH</span>
+              <span>bought @ {card.price / 100000} ETH</span>
             </div>
           ))}
       </div>
+
+      <div>{JSON.stringify(cards, null, 2)}</div>
     </>
   );
 }
