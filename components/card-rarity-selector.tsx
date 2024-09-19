@@ -38,7 +38,6 @@ interface FootballCard {
 export function CardRaritySelector({
   counts,
   cards,
-  positionCounts,
 }: {
   counts: {
     limited: number;
@@ -47,12 +46,6 @@ export function CardRaritySelector({
     unique: number;
   };
   cards: FootballCard[];
-  positionCounts: {
-    goalkeeper: number;
-    defender: number;
-    midfielder: number;
-    forward: number;
-  };
 }) {
   const [selectedRarities, setSelectedRarities] = useState<CardRarity[]>([
     "limited",
@@ -96,6 +89,29 @@ export function CardRaritySelector({
         ? prev.filter((id) => id !== card.objectID)
         : [...prev, card.objectID]
     );
+  };
+
+  const positionCounts = {
+    goalkeeper: cards
+      .filter((card: FootballCard) =>
+        selectedRarities.includes(card.rarity as CardRarity)
+      )
+      .filter((card: FootballCard) => card.position === "Goalkeeper").length,
+    defender: cards
+      .filter((card: FootballCard) =>
+        selectedRarities.includes(card.rarity as CardRarity)
+      )
+      .filter((card: FootballCard) => card.position === "Defender").length,
+    midfielder: cards
+      .filter((card: FootballCard) =>
+        selectedRarities.includes(card.rarity as CardRarity)
+      )
+      .filter((card: FootballCard) => card.position === "Midfielder").length,
+    forward: cards
+      .filter((card: FootballCard) =>
+        selectedRarities.includes(card.rarity as CardRarity)
+      )
+      .filter((card: FootballCard) => card.position === "Forward").length,
   };
 
   return (
