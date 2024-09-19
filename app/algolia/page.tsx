@@ -1,39 +1,17 @@
-"use client";
+import { algoliasearch } from "algoliasearch";
 
-import { liteClient as algoliasearch } from "algoliasearch/lite";
-import { InstantSearchNext } from "react-instantsearch-nextjs";
-import {
-  Hits,
-  Configure,
-  SearchBox,
-  RefinementList,
-  Pagination,
-} from "react-instantsearch";
+const client = algoliasearch("7Z0Z8PASDY", "30fdac6793afa5b820c36e7202e4b872");
 
-const searchClient = algoliasearch(
-  "7Z0Z8PASDY",
-  "30fdac6793afa5b820c36e7202e4b872"
-);
+export default async function Page() {
+  const res = await client.searchSingleIndex({
+    indexName: "CardsOnSale_LowestPrice",
+    searchParams: {
+      filters: "on_sale:true",
+      distinct: true,
+      query: "Rafael Leao",
+      hitsPerPage: 1000,
+    },
+  });
 
-interface CardHit {
-  slug: string;
-}
-
-const Hit = ({ hit }: { hit: CardHit }) => {
-  return <div>{hit.slug}</div>;
-};
-
-export default function Page() {
-  return (
-    <InstantSearchNext
-      indexName="CardsOnSale_LowestPrice"
-      searchClient={searchClient}
-    >
-      <Configure filters="on_sale:true" hitsPerPage={10} />
-      <SearchBox />
-      <RefinementList attribute="position" />
-      <Hits hitComponent={Hit} />
-      <Pagination />
-    </InstantSearchNext>
-  );
+  return <div>{JSON.stringify(res)}</div>;
 }
