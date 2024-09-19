@@ -38,6 +38,7 @@ interface FootballCard {
 export function CardRaritySelector({
   counts,
   cards,
+  positionCounts,
 }: {
   counts: {
     limited: number;
@@ -46,6 +47,12 @@ export function CardRaritySelector({
     unique: number;
   };
   cards: FootballCard[];
+  positionCounts: {
+    goalkeeper: number;
+    defender: number;
+    midfielder: number;
+    forward: number;
+  };
 }) {
   const [selectedRarities, setSelectedRarities] = useState<CardRarity[]>([
     "limited",
@@ -136,16 +143,16 @@ export function CardRaritySelector({
         className="justify-center"
       >
         <ToggleGroupItem value="Goalkeeper" aria-label="Goalkeeper">
-          Goalkeeper
+          Goalkeeper ({positionCounts.goalkeeper})
         </ToggleGroupItem>
         <ToggleGroupItem value="Defender" aria-label="Defender">
-          Defender
+          Defender ({positionCounts.defender})
         </ToggleGroupItem>
         <ToggleGroupItem value="Midfielder" aria-label="Midfielder">
-          Midfielder
+          Midfielder ({positionCounts.midfielder})
         </ToggleGroupItem>
         <ToggleGroupItem value="Forward" aria-label="Forward">
-          Forward
+          Forward ({positionCounts.forward})
         </ToggleGroupItem>
       </ToggleGroup>
 
