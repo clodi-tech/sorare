@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Rajdhani } from "next/font/google";
+import { Rajdhani as FontSans } from "next/font/google";
 import "./globals.css";
 
-const fontSans = Rajdhani({
+const fontSans = FontSans({
   subsets: ["latin"],
-  variable: "--font-sans",
   weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-sans",
 });
 
 export const metadata: Metadata = {
