@@ -1,4 +1,24 @@
 import Image from "next/image";
+import { algoliasearch } from "algoliasearch";
+
+const client = algoliasearch("7Z0Z8PASDY", "30fdac6793afa5b820c36e7202e4b872");
+
+async function getPrice(
+  rarity: string,
+  slug: string,
+  inSeasonEligible: boolean
+) {
+  const res: any = await client.searchSingleIndex({
+    indexName: "CardsOnSale_LowestPrice",
+    searchParams: {
+      filters: `on_sale:true AND sale.primary:false AND rarity:${rarity} AND player.slug:${slug} AND in_season_eligible:${inSeasonEligible}`,
+      distinct: true,
+      hitsPerPage: 1,
+    },
+  });
+
+  return res.hits[0].price;
+}
 
 const query = `
 {

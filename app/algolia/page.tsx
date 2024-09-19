@@ -7,7 +7,7 @@ export default async function Page() {
     indexName: "CardsOnSale_LowestPrice",
     searchParams: {
       filters:
-        "on_sale:true AND sale.primary:false AND rarity:limited AND player.slug:rafael-alexandre-conceicao-leao",
+        "on_sale:true AND sale.primary:false AND rarity:limited AND player.slug:rafael-alexandre-conceicao-leao AND in_season_eligible:false",
       distinct: true,
       hitsPerPage: 10,
     },
@@ -22,6 +22,9 @@ export default async function Page() {
           <p>{hit.price}</p>
         </div>
       ))}
+      <div>
+        <pre>{JSON.stringify(res, null, 2)}</pre>
+      </div>
     </div>
   );
 }
