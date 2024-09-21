@@ -194,12 +194,15 @@ export function CardRaritySelector({
             >
               <CardHeader>
                 <CardTitle>
-                  {card.player.display_name} - {card.position}{" "}
-                  {card.in_season_eligible && " 2425"}
+                  {card.player.display_name}
+                  {card.in_season_eligible && " - 2425"}
                 </CardTitle>
-                <CardDescription>
-                  {card.active_club.long_name || "Unknown Club"} -{" "}
-                  {card.active_league.display_name || "Unknown League"}
+                <CardDescription className="flex flex-col">
+                  <span>{card.position}</span>
+                  <span>{card.active_club.long_name || "Unknown Club"}</span>
+                  <span>
+                    {card.active_league.display_name || "Unknown League"}
+                  </span>
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex flex-col">
